@@ -12,6 +12,8 @@ import pandas as pd
 import pandera as pa
 from typing import Dict, Any, Tuple, List
 
+NEON_CLOUD_URL = "postgresql://neondb_owner:npg_SEnl7VFHrOC6@ep-spring-lake-ao6ij6s5-pooler.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
+DATABASE_URL = os.environ.get("DATABASE_URL") or NEON_CLOUD_URL
 PG_HOST = os.environ.get("POSTGRES_HOST", "127.0.0.1")
 PG_PORT = int(os.environ.get("POSTGRES_PORT", "5433"))
 PG_USER = os.environ.get("POSTGRES_USER", "retail_admin")
@@ -58,7 +60,11 @@ class DataQualityGate:
         Persists corrupted record into dead_letter_queue in PostgreSQL.
         """
         try:
-            conn = psycopg2.connect(host=PG_HOST, port=PG_PORT, user=PG_USER, password=PG_PASS, dbname=PG_DB)
+            db_url = os.environ.get("DATABASE_URL") or DATABASE_URL or NEON_CLOUD_URL
+            if db_url:
+                conn = psycopg2.connect(db_url)
+            else:
+                conn = psycopg2.connect(host=PG_HOST, port=PG_PORT, user=PG_USER, password=PG_PASS, dbname=PG_DB)
             with conn.cursor() as cur:
                 cur.execute("""
                     INSERT INTO dead_letter_queue (error_reason, payload, created_at)

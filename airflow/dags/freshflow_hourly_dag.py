@@ -19,14 +19,22 @@ try:
 except ImportError:
     HAS_AIRFLOW = False
 
+NEON_CLOUD_URL = "postgresql://neondb_owner:npg_SEnl7VFHrOC6@ep-spring-lake-ao6ij6s5-pooler.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
+DATABASE_URL = os.environ.get("DATABASE_URL") or NEON_CLOUD_URL
 PG_HOST = os.environ.get("POSTGRES_HOST", "127.0.0.1")
 PG_PORT = int(os.environ.get("POSTGRES_PORT", "5433"))
 PG_USER = os.environ.get("POSTGRES_USER", "retail_admin")
 PG_PASS = os.environ.get("POSTGRES_PASSWORD", "retail_password")
 PG_DB = os.environ.get("POSTGRES_DB", "retail_ecosystem")
 
+def get_db_connection():
+    db_url = os.environ.get("DATABASE_URL") or DATABASE_URL or NEON_CLOUD_URL
+    if db_url:
+        return psycopg2.connect(db_url)
+    return psycopg2.connect(host=PG_HOST, port=PG_PORT, user=PG_USER, password=PG_PASS, dbname=PG_DB)
+
 def task_quality_check():
-    conn = psycopg2.connect(host=PG_HOST, port=PG_PORT, user=PG_USER, password=PG_PASS, dbname=PG_DB)
+    conn = get_db_connection()
     with conn.cursor() as cur:
         cur.execute("SELECT COUNT(*) FROM dead_letter_queue;")
         dlq_count = cur.fetchone()[0]
@@ -42,7 +50,7 @@ def task_feature_engineering():
 
 def task_ml_prediction():
     from ml.train_spoilage_model import predict_spoilage
-    conn = psycopg2.connect(host=PG_HOST, port=PG_PORT, user=PG_USER, password=PG_PASS, dbname=PG_DB)
+    conn = get_db_connection()
     with conn.cursor() as cur:
         cur.execute("SELECT store_id, product_id, current_stock FROM fact_realtime_inventory WHERE current_stock > 0 LIMIT 20;")
         rows = cur.fetchall()

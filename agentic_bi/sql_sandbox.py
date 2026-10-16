@@ -12,6 +12,9 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 from typing import List, Dict, Any, Tuple
 
+NEON_CLOUD_URL = "postgresql://neondb_owner:npg_SEnl7VFHrOC6@ep-spring-lake-ao6ij6s5-pooler.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require"
+DATABASE_URL = os.environ.get("DATABASE_URL") or NEON_CLOUD_URL
+
 PG_HOST = os.environ.get("POSTGRES_HOST", "127.0.0.1")
 PG_PORT = int(os.environ.get("POSTGRES_PORT", "5433"))
 PG_USER = os.environ.get("POSTGRES_READONLY_USER", "bi_agent_readonly")
@@ -53,12 +56,12 @@ def execute_sandboxed_sql(sql_text: str) -> Tuple[bool, Any]:
     if not is_safe:
         return False, validated_sql
 
-    DATABASE_URL = os.environ.get("DATABASE_URL")
+    db_url = os.environ.get("DATABASE_URL") or DATABASE_URL or NEON_CLOUD_URL
     conn = None
     try:
-        if DATABASE_URL:
+        if db_url:
             conn = psycopg2.connect(
-                DATABASE_URL,
+                db_url,
                 cursor_factory=RealDictCursor
             )
         else:
