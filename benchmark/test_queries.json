@@ -1,0 +1,32 @@
+[
+  {
+    "id": "q01",
+    "query": "Liệt kê 5 cửa hàng ở khu vực TP.HCM đang có nguy cơ tồn đọng mặt hàng Thịt heo CP cao nhất chiều nay.",
+    "complexity": "hard",
+    "tables": ["ml_spoilage_predictions", "dim_stores", "dim_products"]
+  },
+  {
+    "id": "q02",
+    "query": "Cho tôi biết tổng số bản ghi giao dịch lỗi bị đẩy vào Dead Letter Queue theo từng lý do lỗi.",
+    "complexity": "easy",
+    "tables": ["dead_letter_queue"]
+  },
+  {
+    "id": "q03",
+    "query": "Tìm top 5 sản phẩm có tỷ lệ tiêu thụ sell-through rate thấp nhất hôm nay.",
+    "complexity": "medium",
+    "tables": ["fact_realtime_inventory", "dim_stores", "dim_products"]
+  },
+  {
+    "id": "q04",
+    "query": "Cửa hàng nào có lượng tồn kho rau củ cao nhất hiện tại?",
+    "complexity": "medium",
+    "tables": ["fact_realtime_inventory", "dim_stores"]
+  },
+  {
+    "id": "q05",
+    "query": "Tổng số lượng hàng tươi sống đã bán ra trong ngày trên toàn bộ chuỗi 50 cửa hàng.",
+    "complexity": "easy",
+    "tables": ["fact_realtime_inventory"]
+  }
+]
