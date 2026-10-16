@@ -23,49 +23,128 @@ from agentic_bi.insight_synthesizer import synthesize_executive_insight
 LOCAL_LLM_URL = os.environ.get("LOCAL_LLM_URL", "http://localhost:8000/v1")
 
 def sql_generator_node(state: BIState) -> Dict[str, Any]:
-    query = state.get("user_query", "")
-    schema_prompt = state.get("schema_prompt", "")
+    query = state.get("user_query", "").strip()
     retry_count = state.get("retry_count", 0)
-    sql_error = state.get("sql_error")
+    q_low = query.lower()
 
-    # Generate heuristic baseline or LLM query
-    if "thịt heo" in query.lower() or "thit heo" in query.lower():
-        # First attempt might intentionally have an error to test self-correction if specified,
-        # otherwise provide accurate query
-        sql = (
-            "SELECT s.store_id, s.store_name, s.district, p.product_name, "
-            "m.predicted_unsold_units, m.spoilage_risk_score, m.suggested_markdown_rate "
-            "FROM ml_spoilage_predictions m "
-            "JOIN dim_stores s ON m.store_id = s.store_id "
-            "JOIN dim_products p ON m.product_id = p.product_id "
-            "WHERE s.province = 'TP.HCM' AND p.product_name ILIKE '%Thịt heo CP%' "
-            "ORDER BY m.spoilage_risk_score DESC "
-            "LIMIT 5;"
-        )
-    elif "dead letter" in query.lower() or "lỗi" in query.lower():
+    # Check for external LLM key if available
+    api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GROQ_API_KEY") or os.environ.get("OPENAI_API_KEY")
+    if api_key and retry_count == 0:
+        try:
+            target_url = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions" if os.environ.get("GEMINI_API_KEY") else (
+                "https://api.groq.com/openai/v1/chat/completions" if os.environ.get("GROQ_API_KEY") else "https://api.openai.com/v1/chat/completions"
+            )
+            model = "gemini-1.5-flash" if os.environ.get("GEMINI_API_KEY") else ("qwen-2.5-32b-it" if os.environ.get("GROQ_API_KEY") else "gpt-4o-mini")
+            prompt = (
+                f"You are a PostgreSQL expert for Bach Hoa Xanh fresh retail DWH.\n"
+                f"Tables: dim_stores(store_id, store_name, district, province), dim_products(product_id, product_name, category, shelf_life_days), "
+                f"fact_pos_transactions(transaction_id, store_id, product_id, quantity, total_amount, created_at), "
+                f"fact_realtime_inventory(store_id, product_id, opening_stock, units_sold, current_stock, sell_through_rate), "
+                f"ml_spoilage_predictions(store_id, product_id, predicted_unsold_units, spoilage_risk_score, suggested_markdown_rate), "
+                f"dead_letter_queue(error_reason, raw_payload, created_at).\n\n"
+                f"Write ONLY a valid read-only SELECT query for this user question: '{query}'. Return ONLY SQL code, no markdown backticks, no comments."
+            )
+            with httpx.Client(timeout=8.0) as client:
+                resp = client.post(
+                    target_url,
+                    headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+                    json={"model": model, "messages": [{"role": "user", "content": prompt}], "temperature": 0.1, "max_tokens": 300}
+                )
+                if resp.status_code == 200:
+                    raw_sql = resp.json()["choices"][0]["message"]["content"].strip()
+                    raw_sql = re.sub(r"^```sql", "", raw_sql, flags=re.IGNORECASE)
+                    raw_sql = re.sub(r"^```", "", raw_sql)
+                    raw_sql = re.sub(r"```$", "", raw_sql).strip()
+                    if raw_sql.upper().startswith("SELECT"):
+                        return {"generated_sql": raw_sql, "retry_count": retry_count}
+        except Exception:
+            pass
+
+    # Extract limit
+    m_limit = re.search(r"top\s*(\d+)", q_low)
+    limit = int(m_limit.group(1)) if m_limit else 5
+
+    # Extract district
+    districts = ["bình thạnh", "tân phú", "thủ đức", "quận 8", "củ chi", "quận 12", "bình tân", "gò vấp", "quận 7", "hóc môn"]
+    matched_district = None
+    for d in districts:
+        if d in q_low:
+            matched_district = d.title()
+            break
+
+    # Extract product keywords
+    prod_kw = None
+    if "thịt heo" in q_low or "ba rọi" in q_low:
+        prod_kw = "Thịt heo"
+    elif "sườn" in q_low:
+        prod_kw = "Sườn"
+    elif "cá hồi" in q_low:
+        prod_kw = "Cá hồi"
+    elif "cá diêu hồng" in q_low:
+        prod_kw = "Cá diêu hồng"
+    elif "rau muống" in q_low or "rau" in q_low:
+        prod_kw = "Rau muống"
+    elif "cà chua" in q_low:
+        prod_kw = "Cà chua"
+    elif "táo" in q_low:
+        prod_kw = "Táo"
+    elif "gà" in q_low:
+        prod_kw = "gà"
+
+    # Route based on metric type
+    if any(k in q_low for k in ["dead letter", "lỗi", "dlq", "bị chặn", "data quality"]):
         sql = (
             "SELECT error_reason, COUNT(*) AS total_errors "
             "FROM dead_letter_queue "
             "GROUP BY error_reason "
             "ORDER BY total_errors DESC;"
         )
-    elif "sell-through" in query.lower() or "tiêu thụ" in query.lower():
+    elif any(k in q_low for k in ["sell-through", "tiêu thụ", "bán chậm", "tồn kho"]):
+        where_clause = ""
+        if matched_district:
+            where_clause += f" AND s.district = '{matched_district}'"
+        if prod_kw:
+            where_clause += f" AND p.product_name ILIKE '%{prod_kw}%'"
+
         sql = (
-            "SELECT s.store_name, p.product_name, i.opening_stock, i.units_sold, i.current_stock, i.sell_through_rate "
+            "SELECT s.store_name, s.district, p.product_name, i.opening_stock, i.units_sold, i.current_stock, i.sell_through_rate "
             "FROM fact_realtime_inventory i "
             "JOIN dim_stores s ON i.store_id = s.store_id "
             "JOIN dim_products p ON i.product_id = p.product_id "
+            f"WHERE 1=1{where_clause} "
             "ORDER BY i.sell_through_rate ASC "
-            "LIMIT 5;"
+            f"LIMIT {limit};"
+        )
+    elif any(k in q_low for k in ["doanh thu", "tiền mặt", "giao dịch", "pos"]):
+        where_clause = ""
+        if matched_district:
+            where_clause = f" WHERE s.district = '{matched_district}'"
+        sql = (
+            "SELECT s.store_name, s.district, COUNT(t.transaction_id) AS total_orders, SUM(t.total_amount) AS total_revenue "
+            "FROM fact_pos_transactions t "
+            "JOIN dim_stores s ON t.store_id = s.store_id "
+            f"{where_clause} "
+            "GROUP BY s.store_name, s.district "
+            "ORDER BY total_revenue DESC "
+            f"LIMIT {limit};"
         )
     else:
+        # Default Spoilage & Markdown prediction query
+        where_clause = ""
+        if matched_district:
+            where_clause += f" AND s.district = '{matched_district}'"
+        if prod_kw:
+            where_clause += f" AND p.product_name ILIKE '%{prod_kw}%'"
+
         sql = (
-            "SELECT s.store_name, p.product_name, m.predicted_unsold_units, m.spoilage_risk_score "
+            "SELECT s.store_id, s.store_name, s.district, p.product_name, "
+            "m.predicted_unsold_units, m.spoilage_risk_score, m.suggested_markdown_rate "
             "FROM ml_spoilage_predictions m "
             "JOIN dim_stores s ON m.store_id = s.store_id "
             "JOIN dim_products p ON m.product_id = p.product_id "
+            f"WHERE 1=1{where_clause} "
             "ORDER BY m.spoilage_risk_score DESC "
-            "LIMIT 5;"
+            f"LIMIT {limit};"
         )
 
     return {
