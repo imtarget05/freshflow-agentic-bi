@@ -1,6 +1,6 @@
 """
 FreshFlow Stream & Agentic BI Platform — Bách Hóa Xanh (MWG)
-Enterprise SaaS Decision Intelligence & Spoilage Prevention Suite
+Enterprise B2B SaaS Fresh Food Spoilage Prevention & Decision Intelligence Suite
 Architecture: Streaming Ingestion, Pandera Data Quality Gate, Airflow, LightGBM, Self-Correcting Text-to-SQL
 Cloud Deployment: 100% Free Serverless Architecture (Neon PostgreSQL SG)
 """
@@ -47,7 +47,7 @@ from streaming.data_quality import DataQualityGate
 from airflow.dags.freshflow_hourly_dag import run_hourly_pipeline
 
 st.set_page_config(
-    page_title="FreshFlow BI — Enterprise Spoilage Intelligence (BHX)",
+    page_title="FreshFlow BI — Bách Hóa Xanh (MWG)",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -71,26 +71,22 @@ st.markdown("""
         align-items: center;
         background: linear-gradient(135deg, #064e3b 0%, #022c22 100%);
         color: #ffffff;
-        padding: 14px 24px;
+        padding: 16px 24px;
         border-radius: 12px;
         margin-bottom: 20px;
         box-shadow: 0 4px 12px rgba(6, 78, 59, 0.2);
         border: 1px solid #059669;
     }
-    .saas-brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-    }
     .saas-brand-title {
-        font-size: 18px;
+        font-size: 19px;
         font-weight: 700;
         letter-spacing: -0.02em;
         color: #f8fafc;
     }
     .saas-brand-subtitle {
-        font-size: 12px;
+        font-size: 13px;
         color: #a7f3d0;
+        margin-top: 2px;
     }
     .saas-status-pill {
         display: inline-flex;
@@ -101,7 +97,7 @@ st.markdown("""
         color: #34d399;
         font-size: 11px;
         font-weight: 600;
-        padding: 4px 10px;
+        padding: 4px 12px;
         border-radius: 20px;
     }
     .pulse-dot-green {
@@ -125,17 +121,17 @@ st.markdown("""
         border-left: 6px solid #059669;
         border-radius: 10px;
         padding: 24px 28px;
-        box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+        box-shadow: 0 6px 18px rgba(0,0,0,0.04);
         color: #1e293b;
-        margin: 20px 0;
+        margin: 15px 0;
     }
     .memo-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 2px solid #e2e8f0;
+        border-bottom: 2px solid #f1f5f9;
         padding-bottom: 12px;
-        margin-bottom: 18px;
+        margin-bottom: 16px;
     }
     .memo-tag {
         font-family: 'Courier New', monospace;
@@ -145,15 +141,6 @@ st.markdown("""
         padding: 3px 8px;
         border-radius: 4px;
         color: #475569;
-    }
-    .memo-section-title {
-        font-size: 13px;
-        font-weight: 700;
-        text-transform: uppercase;
-        color: #059669;
-        letter-spacing: 0.05em;
-        margin-top: 14px;
-        margin-bottom: 6px;
     }
 
     /* ROI Cards */
@@ -165,7 +152,7 @@ st.markdown("""
         text-align: center;
     }
     .roi-value {
-        font-size: 28px;
+        font-size: 26px;
         font-weight: 800;
         color: #15803d;
         margin: 4px 0;
@@ -274,55 +261,42 @@ def fetch_stores_geo_data():
         return pd.DataFrame()
 
 # ==============================================================================
-# SAAS SIDEBAR: Persona & Cloud Telemetry
+# SAAS SIDEBAR
 # ==============================================================================
 with st.sidebar:
     st.image("https://cdn.tgdd.vn/mwgcart/bhx/images/logo-bhx-2024.png", width=180)
-    st.markdown("### ⚡ FreshFlow Enterprise")
-    
-    # SaaS Role / Persona Switcher
-    persona = st.selectbox(
-        "Góc nhìn Người dùng (Persona View):",
-        [
-            "📊 Giám đốc Vùng / C-Level (Macro BI & Financial Impact)",
-            "🏬 Trưởng ca Vận hành Siêu thị (Store Operations & Telemetry)",
-            "⚙️ Kỹ sư Dữ liệu / AI (Pipeline, Pandera DQ & LLM Sandbox)"
-        ]
-    )
+    st.markdown("### ⚡ FreshFlow Decision Suite")
+    st.caption("Nền tảng Tự hành Giảm thiểu Hủy hàng Thực phẩm Tươi sống")
 
     st.markdown("---")
-    st.markdown("**Trạng thái Hạ tầng Cloud (Singapore AWS):**")
+    st.markdown("**Trạng thái Hạ tầng Vận hành:**")
     st.markdown("""
     - 🟢 **Neon PostgreSQL**: `Singapore AWS (Active)`
     - 🟢 **Streaming Ingestion**: `Redpanda Event Bus`
     - 🟢 **Data Quality Gate**: `Pandera Schema Guard`
     - 🟢 **AI Engine**: `Self-Correcting Text-to-SQL`
-    - 🟢 **Incident RAG**: `FastEmbed BGE-small`
-    - 🟢 **ML Spoilage Model**: `LightGBM v1.4`
+    - 🟢 **Dự Báo Rủi Ro**: `LightGBM v1.4`
+    - 🟢 **Chi phí Máy chủ**: `0 VNĐ / tháng`
     """)
 
     st.divider()
-    st.markdown("**Hiệu quả Vận hành Doanh nghiệp:**")
-    st.caption("• Tỷ lệ hủy hàng tươi: **Giảm từ 4.8% -> 1.4%**")
-    st.caption("• Doanh thu xả hàng thu hồi: **+385.000.000 đ/tháng**")
-    st.caption("• Chi phí Máy chủ Cloud: **$0.00 / tháng**")
+    st.markdown("**Mục tiêu Đánh giá Phỏng vấn:**")
+    st.caption("• **Tab 1 - 3**: Nghiệp vụ quản trị bán lẻ thực tế (Sạch sẽ, trực quan).")
+    st.caption("• **Tab 4**: Đo lường ROI kinh tế & Kiểm định luồng dữ liệu (Data Pipeline).")
 
 # ==============================================================================
-# TOP SAAS BRANDING BAR
+# TOP BRANDING BAR
 # ==============================================================================
 st.markdown(f"""
 <div class="saas-topbar-bhx">
-    <div class="saas-brand">
-        <div style="font-size: 28px;">⚡</div>
-        <div>
-            <div class="saas-brand-title">FreshFlow Stream & Agentic BI Platform — Bách Hóa Xanh</div>
-            <div class="saas-brand-subtitle">Hệ thống Điều hành Tồn kho Tươi sống Tự hành, Dự báo Rủi ro Hết hạn & Trợ lý Phân tích Nghiệp vụ</div>
-        </div>
+    <div>
+        <div class="saas-brand-title">⚡ FreshFlow Decision Intelligence — Bách Hóa Xanh (MWG)</div>
+        <div class="saas-brand-subtitle">Giám Sát Rủi Ro Tồn Ế Nông Sản, Dự Báo Hết Hạn & Trợ Lý Phân Tích Kê Toa Giảm Giá Giờ Vàng</div>
     </div>
     <div style="display: flex; gap: 10px; align-items: center;">
         <div class="saas-status-pill">
             <div class="pulse-dot-green"></div>
-            <span>LIVE PRODUCTION</span>
+            <span>PRODUCTION ONLINE</span>
         </div>
         <div style="background: rgba(255,255,255,0.15); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 500;">
             Khu vực: <b>TP.HCM (50 Siêu thị)</b>
@@ -336,25 +310,25 @@ total_tx, total_dlq, total_stores, high_risk_count, dlq_reasons, recent_dlq = fe
 
 # Top KPI row
 c1, c2, c3, c4 = st.columns(4)
-c1.metric("Giao dịch POS Hợp lệ", f"{total_tx:,}", delta="Real-time Streaming")
-c2.metric("Chặn bởi Data Quality Gate", f"{total_dlq:,}", delta=f"{total_dlq} lỗi cách ly", delta_color="inverse")
+c1.metric("Giao dịch POS Hợp lệ", f"{total_tx:,}", delta="Dữ liệu thời gian thực")
+c2.metric("Chặn bởi Data Quality", f"{total_dlq:,}", delta=f"{total_dlq} lỗi cách ly", delta_color="inverse")
 c3.metric("Mạng Lưới Siêu Thị", f"{total_stores} BHX Hubs", delta="10 Quận/Huyện")
-c4.metric("SKU Tươi sống Nguy cơ cao", f"{high_risk_count} mặt hàng", delta=f"Rủi ro ≥ 70%", delta_color="inverse")
+c4.metric("SKU Nguy cơ Hết hạn Cao", f"{high_risk_count} mặt hàng", delta="Rủi ro ≥ 70%", delta_color="inverse")
 
-# Main Multi-Tab Navigation
-tab_map, tab_copilot, tab_simulator, tab_roi = st.tabs([
-    "🛰️ Real-time Pipeline & HCMC Spoilage Geo-Map",
-    "🤖 Agentic BI Copilot (Text-to-SQL & RAG)",
-    "🏷️ Dynamic Markdown & Price Elasticity What-If",
-    "📈 Phân Tích Lợi Ích Tài Chính & ROI (C-Level)"
+# 4 Tab Navigation: 3 Business Tabs + 1 Dedicated Tech/ROI Tab
+tab_map, tab_copilot, tab_simulator, tab_tech_roi = st.tabs([
+    "🗺️ Bản Đồ Cảnh Báo Rủi Ro Tồn Ế (50 Siêu Thị BHX)",
+    "🤖 Trợ Lý Phân Tích Nghiệp Vụ Tự Động (AI Business Analyst)",
+    "🏷️ Mô Phỏng Giảm Giá Xả Hàng Giờ Vàng (Smart Dynamic Markdown)",
+    "📈 Hiệu Quả Kinh Tế & Kiểm Định Dữ Liệu (ROI & Tech Hub)"
 ])
 
 # ==============================================================================
-# TAB 1: Real-time Pipeline & HCMC Spoilage Geo-Map
+# TAB 1: SPOILAGE GEO-MAP (BUSINESS UX)
 # ==============================================================================
 with tab_map:
-    st.markdown("### 🗺️ Bản đồ Rủi ro Hủy hàng 50 Siêu thị Bách Hóa Xanh (TP.HCM)")
-    st.caption("Trực quan hóa mức độ nguy cơ tồn ế nông sản / thực phẩm tươi theo không gian địa lý thời gian thực.")
+    st.markdown("### 🗺️ Bản Đồ Cảnh Báo Nguy Cơ Hủy Hàng 50 Siêu Thị (TP.HCM)")
+    st.caption("Trực quan hóa mức độ rủi ro tồn ế thực phẩm tươi sống theo không gian địa lý để kịp thời điều chuyển hoặc giảm giá xả hàng.")
 
     df_stores = fetch_stores_geo_data()
 
@@ -362,12 +336,12 @@ with tab_map:
         col_filters, col_map = st.columns([1, 2.5], gap="medium")
 
         with col_filters:
-            st.markdown("#### 🎯 Bộ lọc Phân tích:")
+            st.markdown("#### 🎯 Bộ Lọc Phân Tích:")
             districts_list = ["Tất cả Quận/Huyện"] + sorted(list(df_stores["district"].unique()))
             selected_district = st.selectbox("Chọn Quận / Huyện:", districts_list)
 
             risk_filter = st.radio(
-                "Lọc mức độ rủi ro:",
+                "Phân loại mức độ rủi ro:",
                 ["Tất cả mức độ", "Chỉ nguy cơ cao (≥ 0.70)", "Cảnh báo & Nguy cơ cao (≥ 0.40)"]
             )
 
@@ -383,13 +357,13 @@ with tab_map:
             st.info(f"Hiển thị **{len(df_filtered)} / {len(df_stores)}** siêu thị phù hợp tiêu chí.")
 
             st.markdown("---")
-            st.markdown("**Top 3 Siêu thị Cần Can thiệp khẩn cấp:**")
+            st.markdown("**Top 3 Siêu Thị Cần Xả Hàng Khẩn Cấp:**")
             top_urgent = df_stores.sort_values(by="avg_risk", ascending=False).head(3)
             for idx, r in top_urgent.iterrows():
                 st.markdown(f"""
                 - **{r['store_name']}** ({r['district']})  
                   *Rủi ro: `{r['avg_risk']*100:.1f}%`* | Giảm giá gợi ý: `-{r['max_markdown']:.0f}%`  
-                  *QL: {r['manager_name']} ({r['phone']})*
+                  *Quản lý: {r['manager_name']} ({r['phone']})*
                 """)
 
         with col_map:
@@ -420,7 +394,7 @@ with tab_map:
                     "lon": False,
                     "risk_tier": False
                 },
-                "title": "Mạng lưới Siêu thị BHX TP.HCM — Phân cấp Nguy cơ Hủy hàng Thực phẩm Tươi"
+                "title": "Mạng Lưới Siêu Thị BHX TP.HCM — Phân Cấp Mức Độ Rủi Ro Hủy Hàng"
             }
             fig_map = map_fn(df_filtered, **map_kwargs)
             fig_map.update_layout(
@@ -430,112 +404,46 @@ with tab_map:
             )
             st.plotly_chart(fig_map, use_container_width=True)
 
-        # Store Detail Drilldown Modal / Section
         st.markdown("#### 🏪 Bảng Điều Tra Chi Tiết Siêu Thị (Store Telemetry & Incident Logs):")
         chosen_store_name = st.selectbox("Chọn Siêu thị muốn kiểm tra sâu:", df_stores["store_name"].tolist())
         target_store = df_stores[df_stores["store_name"] == chosen_store_name].iloc[0]
 
         d1, d2, d3, d4 = st.columns(4)
         d1.metric("Quận/Huyện", target_store["district"])
-        d2.metric("Chỉ số Rủi ro TB", f"{target_store['avg_risk']*100:.1f}%", delta="Rủi ro hủy hàng")
+        d2.metric("Chỉ số Rủi ro TB", f"{target_store['avg_risk']*100:.1f}%", delta="Rủi ro tồn ế")
         d3.metric("Số SKU Nguy cơ cao", f"{target_store['high_risk_skus']} mặt hàng")
         d4.metric("Nhiệt độ Tủ mát (IoT)", "3.8°C", delta="Chuẩn an toàn")
 
-    st.markdown("---")
-    st.subheader("⚙️ Streaming POS & Data Quality Controls")
-    col_stream, col_airflow, col_dlq = st.columns([1.2, 1.2, 1.6], gap="large")
-
-    with col_stream:
-        st.markdown("#### ⚡ Bắn Giao dịch Realtime")
-        batch_size = st.slider("Số lượng giao dịch bắn mỗi đợt:", min_value=10, max_value=100, value=25, step=5)
-        injected_noise = st.selectbox("Tỷ lệ dữ liệu rác (Noise Injection):", ["0% (Chuẩn)", "5% (Thực tế)", "15% (Stress Test)"])
-
-        if st.button("▶️ Kích hoạt Streaming POS Simulator", use_container_width=True, type="primary"):
-            noise_rate = 0.0 if "0%" in injected_noise else (0.05 if "5%" in injected_noise else 0.15)
-            gate = DataQualityGate()
-            conn = get_db_connection()
-            valid_pushed = 0
-            blocked_pushed = 0
-
-            with st.spinner(f"Đang sinh và bắn {batch_size} giao dịch vào Event Bus..."):
-                for _ in range(batch_size):
-                    tx = generate_transaction()
-                    import random
-                    if random.random() < noise_rate:
-                        tx["price_applied"] = -25000
-                    is_ok = process_single_transaction(tx, gate, conn)
-                    if is_ok:
-                        valid_pushed += 1
-                    else:
-                        blocked_pushed += 1
-            conn.close()
-            st.success(f"Xử lý xong {batch_size} giao dịch: **{valid_pushed} hợp lệ**, **{blocked_pushed} bị chặn vào DLQ**!")
-            st.rerun()
-
-    with col_airflow:
-        st.markdown("#### ⏱️ Airflow Hourly Orchestrator")
-        st.caption("Chạy định kỳ: Quality Audit -> Feature Engineering -> ML Spoilage -> Vector Sync.")
-        if st.button("🚀 Kích hoạt Airflow Hourly Pipeline", use_container_width=True):
-            with st.spinner("Đang chạy 4 Task trong DAG freshflow_hourly_pipeline..."):
-                run_hourly_pipeline()
-            st.success("Airflow DAG hoàn thành thành công 4/4 Tasks!")
-            st.rerun()
-
-        st.markdown("""
-        **Pipeline Step Status:**
-        - `task_quality_check`: **SUCCESS (0.12s)**
-        - `task_feature_engineering`: **SUCCESS (0.35s)**
-        - `task_ml_prediction`: **SUCCESS (0.58s)**
-        - `task_qdrant_sync`: **SUCCESS (0.22s)**
-        """)
-
-    with col_dlq:
-        st.markdown("#### 🚨 Phân tích Dead Letter Queue (DLQ)")
-        if dlq_reasons:
-            df_reasons = pd.DataFrame(dlq_reasons)
-            fig_dlq = px.pie(
-                df_reasons,
-                names="error_reason",
-                values="count",
-                title="Cơ cấu Lỗi bị chặn bởi Data Quality Gate",
-                hole=0.4,
-                color_discrete_sequence=px.colors.sequential.RdBu
-            )
-            fig_dlq.update_layout(height=240, margin=dict(l=10, r=10, t=30, b=10))
-            st.plotly_chart(fig_dlq, use_container_width=True)
-        else:
-            st.info("Chưa có lỗi nào trong Dead Letter Queue.")
-
 # ==============================================================================
-# TAB 2: Agentic BI Copilot (Text-to-SQL & RAG)
+# TAB 2: AGENTIC BI COPILOT (BUSINESS UX + EXPANDABLE TECH)
 # ==============================================================================
 with tab_copilot:
-    st.markdown("### 🤖 Agentic BI Copilot — Trợ lý Phân tích Nghiệp vụ Thông minh")
-    st.caption("Tự động chuyển đổi câu hỏi Tiếng Việt thành SQL chuẩn, thực thi trong Read-Only Sandbox và tổng hợp báo cáo chỉ đạo.")
+    st.markdown("### 🤖 Trợ Lý Phân Tích Nghiệp Vụ Tự Động (AI Business Analyst)")
+    st.caption("Hỏi đáp dữ liệu bằng Tiếng Việt tự nhiên: Hệ thống tự động truy vấn dữ liệu chính xác và tổng hợp Báo Cáo Điều Hành kèm phương án xử lý.")
 
-    st.markdown("#### 💡 Câu hỏi gợi ý cho Giám đốc Vùng / Quản lý Ngành hàng:")
+    st.markdown("#### 💡 Câu hỏi gợi ý cho Giám đốc Vùng & Quản lý Ngành hàng:")
     p_col1, p_col2, p_col3 = st.columns(3)
     preset_query = ""
     if p_col1.button("🥩 Top 5 cửa hàng thịt heo CP nguy cơ cao nhất?"):
         preset_query = "Liệt kê 5 cửa hàng ở khu vực TP.HCM đang có nguy cơ tồn đọng mặt hàng Thịt heo CP cao nhất chiều nay, nguyên nhân do đâu và đề xuất mức giảm giá xả hàng?"
     if p_col2.button("📊 Tỷ lệ bán (Sell-Through Rate) thấp nhất?"):
         preset_query = "Tìm các cửa hàng có tỷ lệ tiêu thụ (sell-through rate) thấp nhất hôm nay để điều phối tồn kho?"
-    if p_col3.button("🚨 Báo cáo sự cố dữ liệu trong Dead Letter Queue?"):
+    if p_col3.button("🚨 Báo cáo lỗi dữ liệu cần xử lý?"):
         preset_query = "Thống kê các loại lỗi phổ biến nhất bị chặn vào Dead Letter Queue và tần suất xuất hiện?"
 
     user_query = st.text_area(
-        "Nhập câu hỏi nghiệp vụ (Tiếng Việt tự nhiên):",
+        "Nhập câu hỏi nghiệp vụ cần phân tích (Tiếng Việt tự nhiên):",
         value=preset_query if preset_query else "Liệt kê 5 cửa hàng ở khu vực TP.HCM đang có nguy cơ tồn đọng mặt hàng Thịt heo CP cao nhất chiều nay, nguyên nhân do đâu và đề xuất mức giảm giá xả hàng?",
         height=85
     )
 
-    col_btn_run, col_btn_clear = st.columns([1, 4])
-    run_clicked = col_btn_run.button("🚀 Chạy Phân tích Agentic BI", type="primary", use_container_width=True)
+    col_btn_run, _ = st.columns([1, 4])
+    run_clicked = col_btn_run.button("🚀 Chạy Phân Tích Nghiệp Vụ", type="primary", use_container_width=True)
 
     if run_clicked or ("bi_res" in st.session_state and st.session_state.get("last_query") == user_query):
         if run_clicked:
             start_t = time.time()
-            with st.spinner("Đang kích hoạt LangGraph Workflow (Schema Linking -> Sinh SQL -> Sandbox -> RAG -> Báo cáo)..."):
+            with st.spinner("Đang phân tích câu hỏi và tổng hợp dữ liệu điều hành..."):
                 res = process_bi_query(user_query)
             elapsed = time.time() - start_t
             st.session_state["bi_res"] = res
@@ -547,52 +455,28 @@ with tab_copilot:
 
         st.success(f"Phân tích hoàn tất sau **{elapsed:.2f}s**!")
 
-        col_sql_view, col_report_view = st.columns([1.1, 1.3], gap="large")
-
-        with col_sql_view:
-            st.markdown("#### 🔍 Câu lệnh SQL Sandbox & Đánh giá Hiệu năng")
-            sql_text = res.get("generated_sql", "")
-            st.code(sql_text, language="sql")
-
-            retries = res.get("retry_count", 0)
-            if retries > 0:
-                st.warning(f"🔄 Đã kích hoạt Self-Correction Loop: Tự sửa lỗi sau {retries} lần thử!")
-            else:
-                st.info("✅ Zero Syntax Error: Thực thi an toàn trong Read-Only Sandbox!")
-
-            # SQL EXPLAIN ANALYZE Button
-            if st.button("⚡ Chạy EXPLAIN ANALYZE (Query Cost & Plan Analyzer)", use_container_width=True):
-                with st.spinner("Đang chạy EXPLAIN ANALYZE trên Neon PostgreSQL..."):
-                    try:
-                        conn = get_db_connection()
-                        with conn.cursor() as cur:
-                            cur.execute(f"EXPLAIN (ANALYZE, COSTS, VERBOSE) {sql_text}")
-                            explain_rows = cur.fetchall()
-                        conn.close()
-                        st.markdown("**Kế hoạch Thực thi Cơ sở Dữ liệu (PostgreSQL Execution Plan):**")
-                        explain_text = "\n".join([r[0] for r in explain_rows])
-                        st.code(explain_text, language="text")
-                    except Exception as ex:
-                        st.error(f"Lỗi khi chạy EXPLAIN: {ex}")
-
-            # Query results table & CSV Export
-            rows = res.get("query_result")
-            if rows:
-                df_results = pd.DataFrame(rows)
-                st.markdown("#### 📋 Dữ liệu Kết quả Trích xuất:")
-                st.dataframe(df_results, use_container_width=True)
-
-                csv = df_results.to_csv(index=False).encode('utf-8')
-                st.download_button(
-                    label="📥 Xuất Kết quả Phân tích ra CSV",
-                    data=csv,
-                    file_name="freshflow_bi_query_results.csv",
-                    mime="text/csv",
-                    use_container_width=True
-                )
+        col_report_view, col_viz_view = st.columns([1.3, 1.1], gap="large")
 
         with col_report_view:
-            # Result visualizer
+            # Executive Memo Styling
+            st.markdown(f"""
+            <div class="executive-memo">
+                <div class="memo-header">
+                    <div>
+                        <span style="font-size:11px; letter-spacing:1px; color:#64748b; font-weight:700;">BÁCH HÓA XANH — PHÒNG ĐIỀU HÀNH KHO VẬN</span>
+                        <div style="font-size:17px; font-weight:700; color:#064e3b; margin-top:2px;">BÁO CÁO NGHIỆP VỤ & ĐỀ XUẤT XẢ HÀNG KHẨN CẤP</div>
+                    </div>
+                    <div class="memo-tag">ID: MEMO-{uuid.uuid4().hex[:6].upper()}</div>
+                </div>
+                <div>{res.get('final_insight', 'Chưa có dữ liệu.')}</div>
+                <div style="margin-top:16px; padding-top:10px; border-top:1px dashed #cbd5e1; font-size:11px; color:#64748b; display:flex; justify-content:space-between;">
+                    <span>Người đề xuất: AI Business Analyst Copilot</span>
+                    <span>Xác thực: SHA256-VALIDATED</span>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+        with col_viz_view:
             rows = res.get("query_result")
             if rows:
                 df_viz = pd.DataFrame(rows)
@@ -610,35 +494,54 @@ with tab_copilot:
                     fig_bar.update_layout(height=260, margin=dict(l=10, r=10, t=35, b=10))
                     st.plotly_chart(fig_bar, use_container_width=True)
 
-            # Executive Memo Styling
-            st.markdown(f"""
-            <div class="executive-memo">
-                <div class="memo-header">
-                    <div>
-                        <span style="font-size:11px; letter-spacing:1px; color:#64748b; font-weight:700;">BÁCH HÓA XANH — PHÒNG ĐIỀU HÀNH KHO VẬN</span>
-                        <div style="font-size:18px; font-weight:700; color:#064e3b;">BÁO CÁO NGHIỆP VỤ & ĐỀ XUẤT XẢ HÀNG KHẨN CẤP</div>
-                    </div>
-                    <div class="memo-tag">ID: MEMO-{uuid.uuid4().hex[:6].upper()}</div>
-                </div>
-                <div>{res.get('final_insight', 'Chưa có dữ liệu.')}</div>
-                <div style="margin-top:20px; padding-top:10px; border-top:1px dashed #cbd5e1; font-size:11px; color:#64748b; display:flex; justify-content:space-between;">
-                    <span>Người đề xuất: AI Agentic BI Copilot (LightGBM + RAG)</span>
-                    <span>Xác thực số: SHA256-VALIDATED</span>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
+                st.markdown("#### 📋 Dữ Liệu Kết Quả Trích Xuất:")
+                st.dataframe(df_viz, use_container_width=True)
+
+                csv = df_viz.to_csv(index=False).encode('utf-8')
+                st.download_button(
+                    label="📥 Xuất Báo Cáo Ra File CSV",
+                    data=csv,
+                    file_name="freshflow_bi_query_results.csv",
+                    mime="text/csv",
+                    use_container_width=True
+                )
+
+        # NEATLY NESTED TECHNICAL VIEW (FOR INTERVIEW EVALUATION)
+        with st.expander("🔍 Chi Tiết Kỹ Thuật SQL & Kế Hoạch Thực Thi (EXPLAIN ANALYZE - Dành cho Kỹ Sư Phỏng Vấn)", expanded=False):
+            st.markdown("**Câu truy vấn SQL do AI tự sinh trong Read-Only Sandbox:**")
+            sql_text = res.get("generated_sql", "")
+            st.code(sql_text, language="sql")
+
+            retries = res.get("retry_count", 0)
+            if retries > 0:
+                st.warning(f"🔄 Đã kích hoạt Self-Correction Loop: Tự sửa lỗi sau {retries} lần thử!")
+            else:
+                st.info("✅ Zero Syntax Error: Thực thi an toàn trong Read-Only Sandbox!")
+
+            if st.button("⚡ Chạy EXPLAIN ANALYZE trên Neon PostgreSQL", key="btn_explain_bi"):
+                with st.spinner("Đang chạy EXPLAIN ANALYZE..."):
+                    try:
+                        conn = get_db_connection()
+                        with conn.cursor() as cur:
+                            cur.execute(f"EXPLAIN (ANALYZE, COSTS, VERBOSE) {sql_text}")
+                            explain_rows = cur.fetchall()
+                        conn.close()
+                        explain_text = "\n".join([r[0] for r in explain_rows])
+                        st.code(explain_text, language="text")
+                    except Exception as ex:
+                        st.error(f"Lỗi: {ex}")
 
 # ==============================================================================
-# TAB 3: Dynamic Markdown & Price Elasticity What-If Simulator
+# TAB 3: SMART DYNAMIC MARKDOWN SIMULATOR (BUSINESS UX)
 # ==============================================================================
 with tab_simulator:
-    st.markdown("### 🏷️ What-If Simulator: Mô phỏng Độ co giãn Giá & Giải cứu Nông sản")
-    st.caption("Công cụ Phân tích Kê toa (Prescriptive Analytics): Dự báo sản lượng giải cứu và doanh thu phục hồi khi áp dụng chính sách giảm giá giờ vàng.")
+    st.markdown("### 🏷️ Mô Phỏng Giảm Giá Xả Hàng Giờ Vàng (Smart Dynamic Markdown)")
+    st.caption("Công cụ Phân tích Kê toa (Prescriptive Analytics): Dự báo sản lượng giải cứu và doanh thu thu hồi tiền mặt khi áp dụng chính sách giảm giá giờ vàng.")
 
     col_sim_cfg, col_sim_chart = st.columns([1, 1.4], gap="large")
 
     with col_sim_cfg:
-        st.markdown("#### ⚙️ Thiết lập Tham số Mô phỏng:")
+        st.markdown("#### ⚙️ Thiết Lập Tham Số Mô Phỏng:")
         
         selected_prod = st.selectbox(
             "Chọn Mặt hàng Thực phẩm Tươi sống:",
@@ -662,7 +565,7 @@ with tab_simulator:
 
         target_stores_mode = st.radio(
             "Phạm vi áp dụng chính sách:",
-            ["Toàn bộ Siêu thị Nguy cơ cao (Top 5 stores)", "Siêu thị cá biệt: BHX 52 Xô Viết Nghệ Tĩnh (Bình Thạnh)"]
+            ["Toàn bộ Siêu thị Nguy cơ cao (Top 5 siêu thị)", "Siêu thị cá biệt: BHX 52 Xô Viết Nghệ Tĩnh (Bình Thạnh)"]
         )
 
         discount_rate = st.slider(
@@ -685,17 +588,17 @@ with tab_simulator:
         avoided_loss = rescued_kg * base_price
 
         st.markdown("---")
-        st.markdown("#### 📈 Kết quả Dự phóng Can thiệp:")
+        st.markdown("#### 📈 Kết Quả Dự Phóng Can Thiệp:")
         m1, m2 = st.columns(2)
         m1.metric("Sản lượng Giải cứu Thành công", f"{rescued_kg} kg", delta=f"{demand_lift*100:.0f}% Tăng tốc độ tiêu thụ")
         m2.metric("Tồn hủy Còn lại (Waste)", f"{remaining_waste_kg} kg", delta=f"-{demand_lift*100:.0f}% Giảm lượng hủy", delta_color="inverse")
 
         m3, m4 = st.columns(2)
         m3.metric("Doanh thu Thu hồi Dự kiến", f"{int(recovered_revenue):,} đ")
-        m4.metric("Thiệt hại Tránh được (Avoided Loss)", f"{int(avoided_loss):,} đ")
+        m4.metric("Thiệt hại Tránh được", f"{int(avoided_loss):,} đ")
 
-        if st.button("🚀 Phát lệnh Cập nhật Bảng giá xuống Hệ thống POS & Bắn Webhook", type="primary", use_container_width=True):
-            st.success(f"Đã phát thông điệp Kafka & Webhook điều chỉnh giá -{discount_rate}% cho '{selected_prod}' tới các siêu thị chỉ định!")
+        if st.button("🚀 Áp Dụng Chính Sách Giảm Giá Giờ Vàng", type="primary", use_container_width=True):
+            st.success(f"Đã phát thông điệp điều chỉnh giá -{discount_rate}% cho '{selected_prod}' tới quầy thu ngân POS các siêu thị chỉ định!")
             st.json({
                 "action": "DYNAMIC_MARKDOWN_APPLIED",
                 "product": selected_prod,
@@ -703,7 +606,6 @@ with tab_simulator:
                 "price_applied": discounted_price,
                 "target_scope": target_stores_mode,
                 "estimated_recovery_vnd": int(recovered_revenue),
-                "webhook_alert": "SENT_TO_TELEGRAM_BOT_BHX_OPS",
                 "timestamp": pd.Timestamp.now().isoformat()
             })
 
@@ -740,11 +642,11 @@ with tab_simulator:
         """)
 
 # ==============================================================================
-# TAB 4: FINANCIAL IMPACT & ROI (C-LEVEL VIEW)
+# TAB 4: ROI & DATA INTEGRITY HUB (TECHNICAL + BUSINESS VERIFICATION)
 # ==============================================================================
-with tab_roi:
-    st.markdown("### 📈 Báo Cáo Hiệu Quả Đầu Tư & Tối Ưu Chi Phí (C-Level Financial Report)")
-    st.caption("Tổng hợp giá trị kinh tế trực tiếp mang lại cho Bách Hóa Xanh và báo cáo chi phí vận hành hạ tầng Cloud.")
+with tab_tech_roi:
+    st.markdown("### 📈 Hiệu Quả Kinh Tế & Kiểm Định Dữ Liệu (ROI & Data Integrity Hub)")
+    st.caption("Tổng hợp giá trị kinh tế trực tiếp mang lại cho Bách Hóa Xanh và bảng điều khiển kiểm định chất lượng luồng dữ liệu (Data Pipeline).")
 
     r1, r2, r3, r4 = st.columns(4)
     with r1:
@@ -781,15 +683,50 @@ with tab_roi:
         """, unsafe_allow_html=True)
 
     st.markdown("---")
-    col_cloud_compare, col_roi_breakdown = st.columns([1.2, 1.2], gap="large")
+    col_pipeline, col_cloud = st.columns([1.2, 1.2], gap="large")
 
-    with col_cloud_compare:
-        st.markdown("#### ☁️ So sánh Chi Phí Hạ Tầng: Cụm Cũ vs FreshFlow Serverless")
+    with col_pipeline:
+        st.markdown("#### ⚡ Kiểm Định Luồng Streaming POS & Data Quality Gate")
+        st.caption("Mô phỏng tiếp nhận dữ liệu bán hàng tại quầy và xác thực tính toàn vẹn:")
+
+        sim_tx_count = st.slider("Số lượng giao dịch tiếp nhận:", min_value=10, max_value=100, value=25, step=5)
+        if st.button("▶️ Tiếp Nhận Giao Dịch POS Mới", use_container_width=True, type="primary"):
+            gate = DataQualityGate()
+            conn = get_db_connection()
+            valid_pushed = 0
+            blocked_pushed = 0
+            with st.spinner("Đang xử lý qua Data Quality Gate..."):
+                for _ in range(sim_tx_count):
+                    tx = generate_transaction()
+                    is_ok = process_single_transaction(tx, gate, conn)
+                    if is_ok:
+                        valid_pushed += 1
+                    else:
+                        blocked_pushed += 1
+            conn.close()
+            st.success(f"Đã tiếp nhận {sim_tx_count} giao dịch: **{valid_pushed} hợp lệ**, **{blocked_pushed} được tự động cách ly an toàn**!")
+            st.rerun()
+
+        if dlq_reasons:
+            df_reasons = pd.DataFrame(dlq_reasons)
+            fig_dlq = px.pie(
+                df_reasons,
+                names="error_reason",
+                values="count",
+                title="Tỷ lệ Dữ liệu Được Bảo Vệ bởi Data Quality Gate",
+                hole=0.4,
+                color_discrete_sequence=px.colors.sequential.RdBu
+            )
+            fig_dlq.update_layout(height=240, margin=dict(l=10, r=10, t=30, b=10))
+            st.plotly_chart(fig_dlq, use_container_width=True)
+
+    with col_cloud:
+        st.markdown("#### ☁️ So Sánh Chi Phí Hạ Tầng: Cụm Cũ vs FreshFlow Serverless")
         df_costs = pd.DataFrame([
             {"Hạng mục": "Cơ sở dữ liệu (PostgreSQL)", "Hệ thống Cũ (On-Prem / VM)": 450, "FreshFlow Serverless (Neon/Cloud)": 0},
             {"Hạng mục": "Cụm Streaming (Kafka Cluster)", "Hệ thống Cũ (On-Prem / VM)": 600, "FreshFlow Serverless (Neon/Cloud)": 0},
             {"Hạng mục": "Server Chạy Model AI/ML", "Hệ thống Cũ (On-Prem / VM)": 850, "FreshFlow Serverless (Neon/Cloud)": 0},
-            {"Hạng mục": "Hosting Dashboard & Dashboard", "Hệ thống Cũ (On-Prem / VM)": 200, "FreshFlow Serverless (Neon/Cloud)": 0},
+            {"Hạng mục": "Hosting Dashboard", "Hệ thống Cũ (On-Prem / VM)": 200, "FreshFlow Serverless (Neon/Cloud)": 0},
         ])
         fig_cost = px.bar(
             df_costs,
@@ -799,17 +736,15 @@ with tab_roi:
             title="Chi Phí Vận Hành Hàng Tháng (USD)",
             color_discrete_sequence=["#ef4444", "#10b981"]
         )
-        fig_cost.update_layout(height=320, margin=dict(l=10, r=10, t=35, b=10))
+        fig_cost.update_layout(height=280, margin=dict(l=10, r=10, t=35, b=10))
         st.plotly_chart(fig_cost, use_container_width=True)
 
-    with col_roi_breakdown:
-        st.markdown("#### 🎯 Điểm Sáng Dự Án Trình Bày Phỏng Vấn (Key Interview Takeaways):")
-        st.markdown("""
-        1. **End-to-End Data Pipeline**: Từ sự kiện bán hàng tại quầy POS -> Stream Ingestion -> Pandera Data Quality -> Dead Letter Queue -> Database thời gian thực.
-        2. **Machine Learning Thực Chiến**: Áp dụng mô hình LightGBM dự báo xác suất quá hạn trong ngày và tính toán độ co giãn giá $\\epsilon = -1.8$.
-        3. **Agentic AI với LangGraph & Self-Correction**: Tự động chuyển đổi câu hỏi Tiếng Việt thành SQL an toàn trong Read-Only Sandbox, tự phục hồi lỗi cú pháp đạt độ chính xác **100%**.
-        4. **Tối Ưu Hóa Chi Phí Tuyệt Đối**: Toàn bộ hệ thống chạy trên nền tảng Serverless Cloud với **0 VNĐ chi phí**, độ sẵn sàng 24/7.
-        """)
+        st.markdown("#### ⏱️ Điều Phối Tự Động Định Kỳ (Airflow Hourly Pipeline):")
+        if st.button("🚀 Kích Hoạt Chạy Thử Airflow Hourly DAG", use_container_width=True):
+            with st.spinner("Đang chạy 4 task định kỳ..."):
+                run_hourly_pipeline()
+            st.success("Airflow DAG đã hoàn tất thành công 4/4 Tasks!")
+            st.rerun()
 
 st.markdown("---")
 st.caption("FreshFlow Ecosystem — Thiết kế Kiến trúc cho Thế Giới Di Động (MWG) & Bách Hóa Xanh | 0 VNĐ Serverless Cloud")
