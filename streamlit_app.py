@@ -43,7 +43,7 @@ os.environ["DATABASE_URL"] = DATABASE_URL
 # Auto-load API keys from Streamlit Cloud Secrets if configured
 if hasattr(st, "secrets"):
     try:
-        for key_name in ["GEMINI_API_KEY", "GROQ_API_KEY", "OPENAI_API_KEY", "LOCAL_LLM_URL", "LLM_API_BASE"]:
+        for key_name in ["OPENROUTER_API_KEY", "GEMINI_API_KEY", "GROQ_API_KEY", "OPENAI_API_KEY", "LOCAL_LLM_URL", "LLM_API_BASE"]:
             if key_name in st.secrets and not os.environ.get(key_name):
                 os.environ[key_name] = str(st.secrets[key_name])
     except Exception:
@@ -279,18 +279,27 @@ with st.sidebar:
     """)
 
     st.divider()
-    active_cloud_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GROQ_API_KEY") or os.environ.get("OPENAI_API_KEY")
+    active_cloud_key = os.environ.get("OPENROUTER_API_KEY") or os.environ.get("GEMINI_API_KEY") or os.environ.get("GROQ_API_KEY") or os.environ.get("OPENAI_API_KEY")
     if active_cloud_key:
-        provider_name = "Google Gemini" if os.environ.get("GEMINI_API_KEY") else ("Groq Qwen" if os.environ.get("GROQ_API_KEY") else "OpenAI")
+        if os.environ.get("OPENROUTER_API_KEY") or (active_cloud_key and active_cloud_key.startswith("sk-or-v1-")):
+            provider_name = "OpenRouter (Qwen-2.5-72B)"
+        elif os.environ.get("GEMINI_API_KEY"):
+            provider_name = "Google Gemini"
+        elif os.environ.get("GROQ_API_KEY"):
+            provider_name = "Groq Qwen"
+        else:
+            provider_name = "OpenAI"
         st.sidebar.success(f"🔒 Text-to-SQL: {provider_name} (Secured)")
     else:
         st.sidebar.info("💡 Text-to-SQL: Autonomous Engine (Built-in)")
 
     with st.sidebar.expander("🔑 Cấu hình API Key Ngoài (Tùy chọn)", expanded=False):
         st.caption("Khuyên dùng: Cấu hình trong Streamlit Cloud Secrets để bảo mật vĩnh viễn và không bị mất khi reload.")
-        custom_key = st.text_input("Nhập Key tạm thời:", type="password", help="Hệ thống mặc định sử dụng Text-to-SQL Engine tự hành.")
+        custom_key = st.text_input("Nhập Key tạm thời:", type="password", help="Hỗ trợ OpenRouter (sk-or-v1-...), Groq (gsk_...), Gemini, OpenAI.")
         if custom_key:
-            if custom_key.startswith("gsk_"):
+            if custom_key.startswith("sk-or-v1-"):
+                os.environ["OPENROUTER_API_KEY"] = custom_key
+            elif custom_key.startswith("gsk_"):
                 os.environ["GROQ_API_KEY"] = custom_key
             elif custom_key.startswith("AIza"):
                 os.environ["GEMINI_API_KEY"] = custom_key

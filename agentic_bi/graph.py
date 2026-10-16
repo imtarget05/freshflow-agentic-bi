@@ -28,13 +28,22 @@ def sql_generator_node(state: BIState) -> Dict[str, Any]:
     q_low = query.lower()
 
     # Check for external LLM key if available
-    api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GROQ_API_KEY") or os.environ.get("OPENAI_API_KEY")
+    api_key = os.environ.get("OPENROUTER_API_KEY") or os.environ.get("GEMINI_API_KEY") or os.environ.get("GROQ_API_KEY") or os.environ.get("OPENAI_API_KEY")
     if api_key and retry_count == 0:
         try:
-            target_url = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions" if os.environ.get("GEMINI_API_KEY") else (
-                "https://api.groq.com/openai/v1/chat/completions" if os.environ.get("GROQ_API_KEY") else "https://api.openai.com/v1/chat/completions"
-            )
-            model = "gemini-1.5-flash" if os.environ.get("GEMINI_API_KEY") else ("qwen-2.5-32b-it" if os.environ.get("GROQ_API_KEY") else "gpt-4o-mini")
+            if os.environ.get("OPENROUTER_API_KEY") or api_key.startswith("sk-or-v1-"):
+                target_url = "https://openrouter.ai/api/v1/chat/completions"
+                model = os.environ.get("OPENROUTER_MODEL", "qwen/qwen-2.5-72b-instruct")
+            elif os.environ.get("GEMINI_API_KEY"):
+                target_url = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions"
+                model = "gemini-1.5-flash"
+            elif os.environ.get("GROQ_API_KEY"):
+                target_url = "https://api.groq.com/openai/v1/chat/completions"
+                model = "qwen-2.5-32b-it"
+            else:
+                target_url = "https://api.openai.com/v1/chat/completions"
+                model = "gpt-4o-mini"
+
             prompt = (
                 f"You are a PostgreSQL expert for Bach Hoa Xanh fresh retail DWH.\n"
                 f"Tables: dim_stores(store_id, store_name, district, province), dim_products(product_id, product_name, category, shelf_life_days), "
@@ -44,10 +53,16 @@ def sql_generator_node(state: BIState) -> Dict[str, Any]:
                 f"dead_letter_queue(error_reason, raw_payload, created_at).\n\n"
                 f"Write ONLY a valid read-only SELECT query for this user question: '{query}'. Return ONLY SQL code, no markdown backticks, no comments."
             )
-            with httpx.Client(timeout=8.0) as client:
+            headers = {
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+                "HTTP-Referer": "https://freshflow-agentic-bi.streamlit.app",
+                "X-Title": "FreshFlow BHX"
+            }
+            with httpx.Client(timeout=10.0) as client:
                 resp = client.post(
                     target_url,
-                    headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+                    headers=headers,
                     json={"model": model, "messages": [{"role": "user", "content": prompt}], "temperature": 0.1, "max_tokens": 300}
                 )
                 if resp.status_code == 200:
