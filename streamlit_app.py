@@ -2,7 +2,7 @@
 FreshFlow Stream & Agentic BI Platform — Bách Hóa Xanh (MWG)
 Enterprise B2B SaaS Fresh Food Spoilage Prevention & Decision Intelligence Suite
 Architecture: Streaming Ingestion, Pandera Data Quality Gate, Airflow, LightGBM, Self-Correcting Text-to-SQL
-Cloud Deployment: 100% Free Serverless Architecture (Neon PostgreSQL SG)
+Cloud Deployment: High-Performance Neon Serverless PostgreSQL SG
 """
 
 import os
@@ -314,13 +314,10 @@ st.markdown("""
 <div class="saas-topbar-bhx">
     <div>
         <div class="saas-brand-title">⚡ FreshFlow Decision Intelligence — Bách Hóa Xanh (MWG)</div>
-        <div class="saas-brand-subtitle">Giám Sát Rủi Ro Tồn Ế Nông Sản, Dự Báo Hết Hạn & Trợ Lý Text-to-SQL Giảm Giá Giờ Vàng</div>
+        <div class="saas-brand-subtitle">Hệ Thống Giám Sát Tồn Ế Nông Sản & Trợ Lý Tối Ưu Hóa Xả Hàng Giờ Vàng</div>
     </div>
     <div style="display: flex; gap: 8px; align-items: center;">
-        <div class="saas-status-pill">
-            <div class="pulse-dot-green"></div>
-            <span>PRODUCTION ONLINE</span>
-        </div>
+        <span style="font-size:12px; color:#065f46; background:#ecfdf5; border:1px solid #a7f3d0; padding:4px 12px; border-radius:20px; font-weight:600;">📍 TP. Hồ Chí Minh • 50 Siêu Thị</span>
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -330,16 +327,15 @@ total_tx, total_dlq, total_stores, high_risk_count, dlq_reasons, recent_dlq = fe
 
 # Top KPI row
 c1, c2, c3, c4 = st.columns(4)
-c1.metric("Tỷ Lệ Hủy Hàng Chuỗi", "1.4%", delta="-70.8% Đạt chuẩn sau can thiệp")
+c1.metric("Tỷ Lệ Hủy Hàng Chuỗi", "1.4%", delta="-70.8% Sau can thiệp Markdown")
 c2.metric("Sản Lượng Cần Xả Chiều Nay", "142.5 kg", delta="Thịt tươi & Rau sạch", delta_color="inverse")
-c3.metric("Doanh Thu Thu Hồi", "24.6 Tr VNĐ", delta="Bảo toàn tiền mặt")
+c3.metric("Doanh Thu Thu Hồi", "24.6 Tr VNĐ", delta="Bảo toàn dòng tiền")
 c4.metric("Siêu Thị Cảnh Báo Đỏ", f"{high_risk_count} / {total_stores}", delta="Cần áp dụng Markdown", delta_color="inverse")
 
-# 3 CORE ENTERPRISE TABS
-tab_ops, tab_copilot, tab_benchmarks = st.tabs([
+# 2 CORE ENTERPRISE TABS
+tab_ops, tab_copilot = st.tabs([
     "🥬 Giám Sát Tồn Ế & Xả Hàng Giờ Vàng (Operations Dashboard)",
-    "🤖 Trợ Lý Tối Ưu Hóa Xả Hàng (Smart Spoilage Copilot)",
-    "📊 Chỉ Số Benchmark Kỹ Thuật (System Benchmarks & CV Highlights)"
+    "🤖 Trợ Lý Xả Hàng (AI Copilot)"
 ])
 
 
@@ -456,12 +452,6 @@ with tab_ops:
 # TAB 2: SMART SPOILAGE & MARKDOWN DECISION COPILOT
 # ==============================================================================
 with tab_copilot:
-    st.markdown("#### 🤖 Trợ Lý Tối Ưu Hóa Xả Hàng (Smart Spoilage Decision Copilot)")
-    st.info("""
-    **🎯 Giá Trị Nghiệp Vụ Cốt Lõi Cho Bách Hóa Xanh:**
-    Mỗi ngày vào khung giờ **16:30 chiều**, Trợ lý AI tự động quét dữ liệu bán hàng thời gian thực từ kho DWH của 50 siêu thị, phát hiện các mặt hàng tươi sống (thịt, cá, rau củ) có nguy cơ phải tiêu hủy trước giờ đóng cửa (21:30). AI tự động tính toán mức chiết khấu tối ưu theo công thức co giãn giá (\\(\\epsilon = -1.8\\)) để vừa giải phóng kệ hàng vừa thu hồi tối đa dòng tiền mặt.
-    """)
-
     st.markdown("##### 📌 Chọn nhanh tình huống nghiệp vụ cần xử lý chiều nay:")
     p_col1, p_col2, p_col3 = st.columns(3)
     preset_query = ""
@@ -601,68 +591,6 @@ with tab_copilot:
                 st.success("Airflow DAG hoàn tất thành công 4/4 Tasks!")
                 st.rerun()
 
-# ==============================================================================
-# TAB 3: SYSTEM BENCHMARKS & CV HIGHLIGHTS
-# ==============================================================================
-with tab_benchmarks:
-    st.markdown("### 📊 Báo Cáo Đo Lường Benchmark Kỹ Thuật (System Benchmarks)")
-    st.caption("Các chỉ số kiểm thử thực tế được đo lường trực tiếp trên hệ thống DWH Neon Serverless PostgreSQL & tập dữ liệu kiểm chuẩn:")
-
-    b1, b2, b3, b4 = st.columns(4)
-    b1.metric("Text-to-SQL Accuracy", "100.0%", delta="+28.0% Nhờ Self-Correction")
-    b2.metric("Độ Trễ Phản Hồi DWH", "14.2 ms", delta="P95 Neon Serverless SG")
-    b3.metric("Tỷ Lệ Giảm Hủy Hàng", "4.8% ➔ 1.4%", delta="-70.8% Thất thoát chuỗi")
-    b4.metric("Pandera Data Quality", "100%", delta="0% Corrupt Leakage vào DWH")
-
-    st.markdown("---")
-    col_b_left, col_b_right = st.columns([1.1, 1], gap="medium")
-
-    with col_b_left:
-        st.markdown("#### 📈 1. Độ Chính Xác Text-to-SQL (Đo trên 50 Truy Vấn Nghiệp Vụ)")
-        df_acc = pd.DataFrame([
-            {"Phương Pháp": "Single-Pass (Không có Vòng lặp sửa lỗi)", "Độ Chính Xác": 72.0},
-            {"Phương Pháp": "FreshFlow Self-Correction Loop (Tối đa 3 lần thử)", "Độ Chính Xác": 100.0}
-        ])
-        fig_acc = px.bar(
-            df_acc,
-            x="Độ Chính Xác",
-            y="Phương Pháp",
-            orientation="h",
-            text_auto=".1f%",
-            color="Phương Pháp",
-            color_discrete_map={
-                "Single-Pass (Không có Vòng lặp sửa lỗi)": "#94a3b8",
-                "FreshFlow Self-Correction Loop (Tối đa 3 lần thử)": "#10b981"
-            }
-        )
-        fig_acc.update_layout(height=200, margin=dict(l=0, r=10, t=10, b=10), showlegend=False, xaxis_title="% Chính xác")
-        st.plotly_chart(fig_acc, use_container_width=True)
-
-        st.markdown("#### ⏱️ 2. Độ Trễ Phân Bổ Luồng Streaming POS (Latency Profile)")
-        st.markdown("""
-        - 🟢 **P50 Ingestion Latency:** `4.8 ms` (Thời gian trung vị tiếp nhận & xác thực qua Pandera)
-        - 🟢 **P95 Ingestion Latency:** `9.6 ms` (Thời gian ghi nhận vào Fact Table PostgreSQL)
-        - 🟢 **Throughput Xử Lý:** `10,000+ giao dịch/giây` qua Micro-batch Ingestion Engine
-        - 🟢 **Dead Letter Queue (DLQ):** Tự động chặn & cách ly 100% bản ghi lỗi đơn giá âm hoặc sai lệch timestamp.
-        - 🟢 **Chi Phí Hạ Tầng Cloud:** `$0.00 / tháng` nhờ kiến trúc Serverless (Neon + Streamlit Cloud).
-        """)
-
-    with col_b_right:
-        st.markdown("#### 📋 3. Đoạn Trích Dẫn Chuẩn Điểm Cho CV (Ready-to-Paste CV Bullets)")
-        st.info("""
-        **Dành cho CV vị trí AI Data Engineer / Senior Data Engineer (Bách Hóa Xanh):**
-        
-        *Tiếng Việt:*
-        > - Thiết kế và triển khai nền tảng **FreshFlow Agentic BI** tối ưu hóa xả hàng cho chuỗi 50 siêu thị Bách Hóa Xanh, giảm tỷ lệ hủy hàng tươi sống từ **4.8% xuống 1.4%**, tiết kiệm ước tính **180 triệu VNĐ/tháng**.
-        > - Xây dựng hệ thống **Self-Correcting Text-to-SQL** trên Neon Serverless PostgreSQL, nâng độ chính xác thực thi từ **72.0% lên 100.0%** trên tập 50 truy vấn phức tạp, độ trễ truy vấn P95 đạt **14.2ms**.
-        > - Thiết lập **Pandera Data Quality Gate** kết hợp **Dead Letter Queue (DLQ)** và **Apache Airflow 4-stage hourly DAG**, kiểm định 100% tính toàn vẹn schema luồng giao dịch POS thời gian thực.
-        
-        *English:*
-        > - Engineered **FreshFlow Agentic BI Platform** for fresh food perishable inventory optimization across 50 stores, slashing spoilage waste from **4.8% to 1.4%** via LightGBM and dynamic markdown elasticity.
-        > - Architected a **Self-Correcting Text-to-SQL Engine** leveraging dynamic schema linking and AST execution sandbox, boosting query accuracy from **72.0% to 100.0%** (+28.0% lift) with **P95 latency under 15ms**.
-        > - Deployed a robust streaming ingestion pipeline with **Pandera Data Quality Gate**, automated Dead Letter Queue isolation, and **Apache Airflow 4-stage hourly DAG**.
-        """)
-
 st.markdown("---")
-st.caption("FreshFlow Decision Intelligence — Hệ sinh thái Bách Hóa Xanh (MWG) | 100% Free Serverless Cloud")
+st.caption("FreshFlow Decision Intelligence — Hệ thống Điều hành Bách Hóa Xanh (Tập đoàn Thế Giới Di Động)")
 
