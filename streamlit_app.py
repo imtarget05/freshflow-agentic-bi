@@ -335,11 +335,45 @@ c2.metric("Sản Lượng Cần Xả Chiều Nay", "142.5 kg", delta="Thịt tư
 c3.metric("Doanh Thu Thu Hồi", "24.6 Tr VNĐ", delta="Bảo toàn tiền mặt")
 c4.metric("Siêu Thị Cảnh Báo Đỏ", f"{high_risk_count} / {total_stores}", delta="Cần áp dụng Markdown", delta_color="inverse")
 
+# Recruiter & Architecture Hub Expander
+with st.expander("💼 DÀNH CHO NHÀ TUYỂN DỤNG: HỒ SƠ ỨNG VIÊN & KIẾN TRÚC FRESHFLOW DATA PLATFORM (BHX)", expanded=False):
+    c_cand, c_arch = st.columns([1, 1.2], gap="large")
+    with c_cand:
+        st.markdown("""
+        #### 👨‍💻 Ứng Viên: Mai Nguyễn Bình Tân
+        - **Vị trí mục tiêu:** AI Data Engineer (Data Pipeline / Text-to-SQL / ML Spoilage) — *Bách Hóa Xanh (MWG)*
+        - **Kỹ năng lõi đáp ứng JD:**
+          - **Data Pipeline & Streaming Ingestion**: Xử lý POS Stream thời gian thực, nạp micro-batch vào PostgreSQL Fact DWH.
+          - **Data Quality & Governance**: Pandera Schema Validation Engine kiểm định kiểu dữ liệu, tự động cách ly giao dịch lỗi vào Dead Letter Queue (DLQ).
+          - **Workflow Orchestration**: Apache Airflow 4-stage pipeline định kỳ hàng giờ (`ingest_pos_stream` ➔ `validate_pandera` ➔ `load_warehouse` ➔ `ml_spoilage_scoring`).
+          - **Self-Correcting Text-to-SQL**: Dynamic Schema Linker, Contextual Incident RAG, tự sửa lỗi truy vấn, độ trễ <15ms trên Neon PostgreSQL Singapore.
+          - **Dynamic Markdown Optimization**: Mô hình LightGBM kết hợp công thức co giãn giá ($\epsilon = -1.8$) xả hàng giờ vàng bảo toàn dòng tiền.
+        - **GitHub Source Code:** [github.com/imtarget05/freshflow-agentic-bi](https://github.com/imtarget05/freshflow-agentic-bi)
+        """)
+    with c_arch:
+        st.markdown("""
+        #### 🏛️ Kiến Trúc Data Platform (100% Serverless - $0/tháng)
+        ```text
+        [Quầy Thu Ngân POS (50 Siêu Thị)]
+                      │ (Micro-batch POS Stream)
+                      ▼
+        [1. Pandera Data Quality Gate] ──(Lỗi Schema / Đơn giá âm)──▶ [Dead Letter Queue (DLQ)]
+                      │ (Dữ liệu hợp lệ 100%)
+                      ▼
+        [2. Fact DWH (Neon Serverless PostgreSQL SG)] ◀── [Airflow Hourly DAG Orchestrator]
+                      │
+                      ├─▶ [3. LightGBM Spoilage Predictor] ──▶ Dự báo rủi ro hủy hàng & Gợi ý Markdown
+                      │
+                      └─▶ [4. Self-Correcting Text-to-SQL] ──▶ Trợ lý BI tự động phục vụ Giám đốc Chuỗi
+        ```
+        """)
+
 # 2 CORE ENTERPRISE TABS
 tab_ops, tab_data = st.tabs([
     "🥬 Giám Sát Tồn Ế & Xả Hàng Giờ Vàng (Operations Dashboard)",
     "⚡ Trợ Lý Text-to-SQL & Data Pipeline (Data Engineering & BI)"
 ])
+
 
 # ==============================================================================
 # TAB 1: OPERATIONS DASHBOARD (GEO MAP + DYNAMIC MARKDOWN SIMULATOR)
@@ -490,6 +524,12 @@ with tab_data:
                     <div style="font-size:16px; font-weight:700; color:#064e3b; margin-top:2px;">BÁO CÁO PHÂN TÍCH ĐIỀU HÀNH & ĐỀ XUẤT XẢ HÀNG</div>
                 </div>
                 <div class="memo-tag">STATUS: 200 OK ({elapsed:.2f}s)</div>
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin: 4px 0 6px 0;">
+                <span style="background:rgba(16,185,129,0.15); border:1px solid #10b981; color:#059669; font-size:11px; font-weight:600; padding:3px 10px; border-radius:14px;">⚡ Engine: Neon Serverless PostgreSQL (SG)</span>
+                <span style="background:rgba(59,130,246,0.15); border:1px solid #3b82f6; color:#2563eb; font-size:11px; font-weight:600; padding:3px 10px; border-radius:14px;">⏱️ Latency: {int(elapsed*1000)}ms</span>
+                <span style="background:rgba(245,158,11,0.15); border:1px solid #f59e0b; color:#d97706; font-size:11px; font-weight:600; padding:3px 10px; border-radius:14px;">🛡️ Sandbox: 3s Timeout (Read-Only)</span>
+                <span style="background:rgba(168,85,247,0.15); border:1px solid #a855f7; color:#7c3aed; font-size:11px; font-weight:600; padding:3px 10px; border-radius:14px;">🔄 Self-Correction: {res.get('retry_count', 0)} Retries</span>
             </div>
         </div>
         """, unsafe_allow_html=True)
